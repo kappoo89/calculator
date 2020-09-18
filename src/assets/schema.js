@@ -1,0 +1,21 @@
+const schema = [
+  { symbol: "C", operator: "c", styleName: "operator" },
+  { symbol: "%", operator: "%", styleName: "operator" },
+  { symbol: "÷", operator: "/", styleName: "operator" },
+  { symbol: "×", operator: "*", styleName: "operator" },
+  { symbol: "7", operator: "7", styleName: "" },
+  { symbol: "8", operator: "8", styleName: "" },
+  { symbol: "9", operator: "9", styleName: "" },
+  { symbol: "-", operator: "-", styleName: "operator" },
+  { symbol: "4", operator: "4", styleName: "" },
+  { symbol: "5", operator: "5", styleName: "" },
+  { symbol: "6", operator: "6", styleName: "" },
+  { symbol: "+", operator: "+", styleName: "operator" },
+  { symbol: "1", operator: "1", styleName: "" },
+  { symbol: "2", operator: "2", styleName: "" },
+  { symbol: "3", operator: "3", styleName: "" },
+  { symbol: "=", operator: "=", styleName: "taller operator" },
+  { symbol: "0", operator: "0", styleName: "larger" },
+  { symbol: ",", operator: ",", styleName: "" },
+];
+export default schema;

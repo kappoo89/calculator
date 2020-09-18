@@ -1,0 +1,59 @@
+$main-color: #4febf2;
+
+@mixin linear-gradient($direction, $color-stops...) {
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(
+    legacy-direction($direction),
+    $color-stops
+  );
+  background: linear-gradient($direction, $color-stops);
+}
+
+.App {
+  height: 100%;
+  color: white;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 40% 60%;
+  .display {
+    background-image: linear-gradient(#1e3b49, #1c4550);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding-right: 20px;
+    &Result {
+      font-size: 24vw;
+    }
+  }
+  .buttons {
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
+    column-gap: 2px;
+    row-gap: 2px;
+    background-image: linear-gradient(#38505d, #2f686d);
+    .button {
+      font-size: 6vw;
+      align-self: stretch;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(black, 0.2);
+      &.taller {
+        grid-row: span 2;
+      }
+      &.larger {
+        grid-column: span 2;
+      }
+      &.operator {
+        color: $main-color;
+      }
+      &.active {
+        color: white;
+        background-color: $main-color;
+      }
+    }
+  }
+}
