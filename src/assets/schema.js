@@ -16,6 +16,6 @@ const schema = [
   { symbol: "3", operator: "3", styleName: "" },
   { symbol: "=", operator: "=", styleName: "taller operator" },
   { symbol: "0", operator: "0", styleName: "larger" },
-  { symbol: ",", operator: ",", styleName: "" },
+  { symbol: ".", operator: ".", styleName: "" },
 ];
 export default schema;

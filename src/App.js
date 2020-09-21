@@ -1,24 +1,31 @@
 import React, { useState } from "react";
 import "./App.scss";
 import schema from "./assets/schema";
-import { evaluate } from "mathjs";
+import { evaluate, format } from "mathjs";
 
 import Display from "./components/display/Display";
 import Buttons from "./components/buttons/Buttons";
 
 function App() {
-  const [result, setResult] = useState("0");
+  const [result, setResult] = useState(0);
   const [active, setActive] = useState("");
-  const [memory, setMemory] = useState({ operator: "", total: 0 });
+  const [memory, setMemory] = useState({
+    operator: "+",
+    total: 0,
+    lastWasEqual: false,
+  });
 
   function reset() {
-    setResult("0");
+    setResult(0);
     setActive("");
-    setMemory({ operator: "", total: 0 });
+    setMemory({ operator: "", total: 0, lastWasEqual: false });
   }
-  function calculateAll() {
-    //calculateAll
-    reset();
+
+  function calculateOperation(operand1, operand2, operator) {
+    const operationString = operand1 + operator + operand2;
+    return format(evaluate(operationString), {
+      precision: 14,
+    });
   }
 
   function pushBtn(symbol) {
@@ -26,50 +33,70 @@ function App() {
       case "c":
         reset();
         break;
-      case ",":
-        setActive(symbol);
-        setMemory([...memory, {}]);
-        break;
+      case ".":
       case "%":
         break;
       case "=":
         setActive("");
-        setResult((prevResult) =>
-          evaluate(memory.total + memory.operator + prevResult)
-        );
-        setMemory((prevMemory) => {
-          return { operator: prevMemory.operator, total: result };
-        });
+        if (!memory.lastWasEqual) {
+          setMemory((prevMemory) => {
+            return {
+              operator: prevMemory.operator,
+              total: parseInt(result),
+              lastWasEqual: true,
+            };
+          });
+
+          setResult((prevResult) => {
+            return calculateOperation(
+              memory.total,
+              prevResult,
+              memory.operator
+            );
+          });
+        } else {
+          setResult((prevResult) => {
+            return calculateOperation(
+              prevResult,
+              memory.total,
+              memory.operator
+            );
+          });
+        }
+
         break;
       case "+":
       case "-":
       case "*":
       case "/":
-        if (active !== "") {
-          setMemory((prevMemory) => {
-            return { operator: symbol, total: prevMemory.total };
-          });
-        } else {
-          setMemory((prevMemory) => {
-            const total = evaluate(
-              prevMemory.total + prevMemory.operator + result
+        setMemory((prevMemory) => {
+          let total = 0;
+          if (active !== "") {
+            total = prevMemory.total;
+          } else if (prevMemory.lastWasEqual) {
+            total = result;
+          } else {
+            total = calculateOperation(
+              result,
+              prevMemory.total,
+              prevMemory.operator
             );
-            return { operator: symbol, total: total };
-          });
-        }
+          }
+          return { operator: symbol, total: total, lastWasEqual: false };
+        });
         setActive(symbol);
         break;
       default:
-        if (active !== "") {
-          setActive("");
+        console.log(memory.lastWasEqual);
+        console.log(result === 0);
+        console.log(active !== "");
+
+        if (memory.lastWasEqual || result === 0 || active !== "") {
           setResult(symbol);
         } else {
-          if (result === "0") {
-            setResult(symbol);
-          } else {
-            setResult((prevResult) => prevResult + symbol);
-          }
+          setResult((prevResult) => prevResult + symbol);
         }
+        setActive("");
     }
   }
   console.log("--------");
